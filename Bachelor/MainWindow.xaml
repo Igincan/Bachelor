@@ -29,7 +29,7 @@
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid>
+        <Grid Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition Width="5*"></ColumnDefinition>
@@ -41,7 +41,36 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Canvas Background="Black" Grid.Column="1" Grid.Row="1"></Canvas>
+            <Canvas Background="Black" Grid.Column="1" Grid.Row="1" x:Name="Snake">
+                <Rectangle
+                    x:Name="FirstRectangle"
+                    Fill="AliceBlue"
+                    Width="50"
+                    Height="50"
+                    Canvas.Left="100"
+                    Canvas.Top="100"
+                    Visibility="Hidden" />
+            </Canvas>
         </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="0.5*"></RowDefinition>
+                <RowDefinition Height="4.5*"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Button Grid.Column="1" Grid.Row="1" Margin="10" Click="StartSnake">Start</Button>
+            <Button Grid.Column="2" Grid.Row="1" Margin="10" Click="StopSnake">Stop</Button>
+            
+        </Grid>
+        
     </Grid>
 </mah:MetroWindow>

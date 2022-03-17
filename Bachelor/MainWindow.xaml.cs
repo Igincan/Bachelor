@@ -3,6 +3,8 @@ using System.Diagnostics;
 
 using MahApps.Metro.Controls;
 using System.Runtime.InteropServices;
+using System.Windows.Shapes;
+using System.Windows.Media;
 
 namespace Bachelor
 {
@@ -18,7 +20,7 @@ namespace Bachelor
 
         private void LaunchGitHub(object sender, RoutedEventArgs e)
         {
-            string url = "https://github.com/";
+            string url = "https://github.com/Igincan/Bachelor";
             try
             {
                 Process.Start(url);
@@ -43,6 +45,16 @@ namespace Bachelor
                     throw;
                 }
             }
+        }
+
+        private void StartSnake(object sender, RoutedEventArgs e)
+        {
+            FirstRectangle.Visibility = Visibility.Visible;
+        }
+
+        private void StopSnake(object sender, RoutedEventArgs e)
+        {
+            FirstRectangle.Visibility = Visibility.Hidden;
         }
     }
 }
