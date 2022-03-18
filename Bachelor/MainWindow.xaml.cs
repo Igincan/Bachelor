@@ -5,6 +5,10 @@ using MahApps.Metro.Controls;
 using System.Runtime.InteropServices;
 using System.Windows.Shapes;
 using System.Windows.Media;
+using Bachelor.Snake;
+using System.Windows.Threading;
+using System;
+using System.Windows.Input;
 
 namespace Bachelor
 {
@@ -13,9 +17,13 @@ namespace Bachelor
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        private Game _game;
+        private DispatcherTimer _gameTickTimer;
+
         public MainWindow()
         {
             InitializeComponent();
+            _gameTickTimer = new DispatcherTimer();
         }
 
         private void LaunchGitHub(object sender, RoutedEventArgs e)
@@ -49,12 +57,45 @@ namespace Bachelor
 
         private void StartSnake(object sender, RoutedEventArgs e)
         {
-            FirstRectangle.Visibility = Visibility.Visible;
+            _game.Start();
+            _gameTickTimer.Start();
+            Focusable = false;
         }
 
         private void StopSnake(object sender, RoutedEventArgs e)
         {
-            FirstRectangle.Visibility = Visibility.Hidden;
+            _game.Stop();
+            _gameTickTimer.Stop();
+        }
+
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            _game = new Game(SnakeCanvas);
+
+            _gameTickTimer.Tick += (object sender, EventArgs e) => _game.Update();
+            _gameTickTimer.Stop();
+            _gameTickTimer.Interval = TimeSpan.FromMilliseconds(200);
+
+            this.KeyDown += (object sender, KeyEventArgs e) =>
+            {
+                switch (e.Key)
+                {
+                    case Key.W:
+                        _game.ChangeSnakeDirection(Direction.UP);
+                        break;
+                    case Key.S:
+                        _game.ChangeSnakeDirection(Direction.DOWN);
+                        break;
+                    case Key.A:
+                        _game.ChangeSnakeDirection(Direction.LEFT);
+                        break;
+                    case Key.D:
+                        _game.ChangeSnakeDirection(Direction.RIGHT);
+                        break;
+                    default:
+                        break;
+                }
+            };
         }
     }
 }

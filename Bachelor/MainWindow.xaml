@@ -8,6 +8,7 @@
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         WindowState="Maximized"
+        Loaded="MetroWindow_Loaded"
         Title="Snake" Height="450" Width="800">
 
     <mah:MetroWindow.LeftWindowCommands>
@@ -41,15 +42,11 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Canvas Background="Black" Grid.Column="1" Grid.Row="1" x:Name="Snake">
-                <Rectangle
-                    x:Name="FirstRectangle"
-                    Fill="AliceBlue"
-                    Width="50"
-                    Height="50"
-                    Canvas.Left="100"
-                    Canvas.Top="100"
-                    Visibility="Hidden" />
+            <Canvas
+                Background="BurlyWood"
+                Grid.Column="1"
+                Grid.Row="1"
+                x:Name="SnakeCanvas">
             </Canvas>
         </Grid>
 
