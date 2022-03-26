@@ -72,7 +72,7 @@ namespace Bachelor
         {
             _game = new Game(SnakeCanvas);
 
-            _gameTickTimer.Tick += (object sender, EventArgs e) => _game.Update();
+            _gameTickTimer.Tick += (object sender, EventArgs e) => _game.Tick();
             _gameTickTimer.Stop();
             _gameTickTimer.Interval = TimeSpan.FromMilliseconds(200);
 

@@ -12,25 +12,35 @@ namespace Bachelor.Snake
     internal class Snake
     {
         public LinkedList<(int X, int Y)> Body { get; private set; }
+        public (int X, int Y) Head
+        {
+            get
+            {
+                return Body.Last.Value;
+            }
+        }
+
         private Direction _direction;
+        private bool _eaten;
 
         public Snake((int X, int Y) startingCoordinates, Direction direction)
         {
             Body = new LinkedList<(int X, int Y)>();
             Body.AddLast(startingCoordinates);
-            Body.AddLast((startingCoordinates.X - 1, startingCoordinates.Y));
-            Body.AddLast((startingCoordinates.X - 2, startingCoordinates.Y));
-            Body.AddLast((startingCoordinates.X - 3, startingCoordinates.Y));
-            Body.AddLast((startingCoordinates.X - 4, startingCoordinates.Y));
-            Body.AddLast((startingCoordinates.X - 5, startingCoordinates.Y));
-            Body.AddLast((startingCoordinates.X - 6, startingCoordinates.Y));
             _direction = direction;
         }
 
         public void Move()
         {
             (int X, int Y) head = Body.Last.Value;
-            Body.RemoveFirst();
+            if (_eaten)
+            {
+                _eaten = false;
+            }
+            else
+            {
+                Body.RemoveFirst();
+            }
             switch (_direction)
             {
                 case Direction.UP:
@@ -50,9 +60,14 @@ namespace Bachelor.Snake
             }
         }
 
-        public void changeDirection(Direction direction)
+        public void ChangeDirection(Direction direction)
         {
             _direction = direction;
+        }
+
+        public void Eat()
+        {
+            _eaten = true;
         }
     }
 }
