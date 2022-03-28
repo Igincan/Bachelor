@@ -17,7 +17,7 @@ namespace Bachelor
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        private Game _game;
+        private Game? _game;
         private DispatcherTimer _gameTickTimer;
 
         public MainWindow()
@@ -64,15 +64,20 @@ namespace Bachelor
 
         private void StopSnake(object sender, RoutedEventArgs e)
         {
-            _game.Stop();
+            StopSnake();
+        }
+
+        private void StopSnake()
+        {
+            _game!.Stop();
             _gameTickTimer.Stop();
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            _game = new Game(SnakeCanvas);
+            _game = new Game(SnakeCanvas, () => StopSnake());
 
-            _gameTickTimer.Tick += (object sender, EventArgs e) => _game.Tick();
+            _gameTickTimer.Tick += (object? sender, EventArgs e) => _game.Tick();
             _gameTickTimer.Stop();
             _gameTickTimer.Interval = TimeSpan.FromMilliseconds(200);
 
@@ -80,17 +85,11 @@ namespace Bachelor
             {
                 switch (e.Key)
                 {
-                    case Key.W:
-                        _game.ChangeSnakeDirection(Direction.UP);
-                        break;
-                    case Key.S:
-                        _game.ChangeSnakeDirection(Direction.DOWN);
-                        break;
                     case Key.A:
-                        _game.ChangeSnakeDirection(Direction.LEFT);
+                        _game.ChangeSnakeNextDirection(NextDirection.LEFT);
                         break;
                     case Key.D:
-                        _game.ChangeSnakeDirection(Direction.RIGHT);
+                        _game.ChangeSnakeNextDirection(NextDirection.RIGHT);
                         break;
                     default:
                         break;

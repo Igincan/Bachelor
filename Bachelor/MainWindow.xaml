@@ -9,6 +9,7 @@
         mc:Ignorable="d"
         WindowState="Maximized"
         Loaded="MetroWindow_Loaded"
+        Background="#1F1F1F"
         Title="Snake" Height="450" Width="800">
 
     <mah:MetroWindow.LeftWindowCommands>

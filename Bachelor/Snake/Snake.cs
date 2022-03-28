@@ -22,6 +22,7 @@ namespace Bachelor.Snake
 
         private Direction _direction;
         private bool _eaten;
+        private NextDirection _nextDirection;
 
         public Snake((int X, int Y) startingCoordinates, Direction direction)
         {
@@ -41,28 +42,37 @@ namespace Bachelor.Snake
             {
                 Body.RemoveFirst();
             }
+
+            int newDirection = ((int)_direction + (int)_nextDirection) % 4;
+            if (newDirection == -1)
+            {
+                newDirection = 3;
+            }
+            _direction = (Direction)newDirection;
+            _nextDirection = NextDirection.STRAIGHT;
+
             switch (_direction)
             {
-                case Direction.UP:
-                    Body.AddLast((head.X, head.Y - 1));
-                    break;
-                case Direction.DOWN:
-                    Body.AddLast((head.X, head.Y + 1));
-                    break;
                 case Direction.LEFT:
                     Body.AddLast((head.X - 1, head.Y));
                     break;
+                case Direction.UP:
+                    Body.AddLast((head.X, head.Y - 1));
+                    break;
                 case Direction.RIGHT:
                     Body.AddLast((head.X + 1, head.Y));
+                    break;
+                case Direction.DOWN:
+                    Body.AddLast((head.X, head.Y + 1));
                     break;
                 default:
                     break;
             }
         }
 
-        public void ChangeDirection(Direction direction)
+        public void ChangeNextDirection(NextDirection nextDirection)
         {
-            _direction = direction;
+            _nextDirection = nextDirection;
         }
 
         public void Eat()

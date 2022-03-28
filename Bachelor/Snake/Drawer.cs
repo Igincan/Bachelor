@@ -50,5 +50,10 @@ namespace Bachelor.Snake
             _canvas.Children.Clear();
             _squares = new Rectangle?[_sideSquareCount, _sideSquareCount];
         }
+
+        public bool CheckSquare((int X, int Y) coordinates)
+        {
+            return _squares[coordinates.X, coordinates.Y] != null;
+        }
     }
 }
