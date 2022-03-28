@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor.Snake
 {
-    internal enum NextDirection
+    public enum NextDirection
     {
         LEFT = -1,
         STRAIGHT = 0,

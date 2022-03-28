@@ -9,8 +9,9 @@
         mc:Ignorable="d"
         WindowState="Maximized"
         Loaded="MetroWindow_Loaded"
-        Background="#1F1F1F"
-        Title="Snake" Height="450" Width="800">
+        MinWidth="1300" MinHeight="700"
+        Width="1300" Height="700"
+        Title="Snake">
 
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands>
@@ -34,19 +35,26 @@
         <Grid Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="5*"></ColumnDefinition>
+                <ColumnDefinition Width="600"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
-                <RowDefinition Height="5*"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="600"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
 
+            <GroupBox
+                Grid.Column="1"
+                Grid.Row="1"
+                Header="Score"
+                x:Name="ScoreGroupBox"
+                mah:ControlsHelper.ContentCharacterCasing="Upper" />
             <Canvas
                 Background="BurlyWood"
                 Grid.Column="1"
-                Grid.Row="1"
+                Grid.Row="2"
                 x:Name="SnakeCanvas">
             </Canvas>
         </Grid>

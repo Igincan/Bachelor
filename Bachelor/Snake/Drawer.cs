@@ -9,7 +9,7 @@ using System.Windows.Shapes;
 
 namespace Bachelor.Snake
 {
-    internal class Drawer
+    public class Drawer
     {
         private Canvas _canvas;
         private int _sideSquareCount;
@@ -40,7 +40,7 @@ namespace Bachelor.Snake
 
         public void RemoveSquare((int X, int Y) coordinates)
         {
-            Rectangle square = _squares[coordinates.X, coordinates.Y];
+            Rectangle? square = _squares[coordinates.X, coordinates.Y];
             _canvas.Children.Remove(square);
             _squares[coordinates.X, coordinates.Y] = null;
         }

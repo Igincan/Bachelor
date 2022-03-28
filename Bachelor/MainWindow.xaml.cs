@@ -17,13 +17,24 @@ namespace Bachelor
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        private Game? _game;
+        public Game? Game { get; private set; }
+
         private DispatcherTimer _gameTickTimer;
+
 
         public MainWindow()
         {
             InitializeComponent();
             _gameTickTimer = new DispatcherTimer();
+        }
+
+        public void StopSnake()
+        {
+            if (Game != null)
+            {
+                Game.Stop();
+                _gameTickTimer.Stop();
+            }
         }
 
         private void LaunchGitHub(object sender, RoutedEventArgs e)
@@ -57,9 +68,12 @@ namespace Bachelor
 
         private void StartSnake(object sender, RoutedEventArgs e)
         {
-            _game.Start();
-            _gameTickTimer.Start();
-            Focusable = false;
+            if (Game != null)
+            {
+                Game.Start();
+                _gameTickTimer.Start();
+                Focusable = false;
+            }
         }
 
         private void StopSnake(object sender, RoutedEventArgs e)
@@ -67,17 +81,11 @@ namespace Bachelor
             StopSnake();
         }
 
-        private void StopSnake()
-        {
-            _game!.Stop();
-            _gameTickTimer.Stop();
-        }
-
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            _game = new Game(SnakeCanvas, () => StopSnake());
+            Game = new Game(SnakeCanvas, this);
 
-            _gameTickTimer.Tick += (object? sender, EventArgs e) => _game.Tick();
+            _gameTickTimer.Tick += (object? sender, EventArgs e) => Game.Tick();
             _gameTickTimer.Stop();
             _gameTickTimer.Interval = TimeSpan.FromMilliseconds(200);
 
@@ -86,10 +94,10 @@ namespace Bachelor
                 switch (e.Key)
                 {
                     case Key.A:
-                        _game.ChangeSnakeNextDirection(NextDirection.LEFT);
+                        Game.ChangeSnakeNextDirection(NextDirection.LEFT);
                         break;
                     case Key.D:
-                        _game.ChangeSnakeNextDirection(NextDirection.RIGHT);
+                        Game.ChangeSnakeNextDirection(NextDirection.RIGHT);
                         break;
                     default:
                         break;

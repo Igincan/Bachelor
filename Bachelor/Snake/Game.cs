@@ -9,8 +9,21 @@ using System.Windows.Media;
 
 namespace Bachelor.Snake
 {
-    internal class Game
+    public class Game
     {
+        public int Score
+        {
+            get => _score;
+            private set
+            {
+                _score = value;
+                if (_mainWindow != null)
+                {
+                    _mainWindow.ScoreGroupBox.Content = value;
+                }
+            }
+        }
+
         private Snake _snake;
         private (int X, int Y) _food;
         private bool _foodEaten;
@@ -18,18 +31,20 @@ namespace Bachelor.Snake
         private Drawer _drawer;
         private Random _random;
         private bool _lost;
-        private Action _stopSnake;
+        private MainWindow _mainWindow;
+        private int _score;
 
-        public Game(Canvas canvas, Action stopSnake)
+        public Game(Canvas canvas, MainWindow mainWindow)
         {
+            Score = 0;
             _snake = new Snake((0, 0), Direction.RIGHT);
             _food = (0, 0);
             _foodEaten = false;
-            _sideSquareCount = 20;
+            _sideSquareCount = 15;
             _drawer = new Drawer(canvas, _sideSquareCount);
             _random = new Random();
             _lost = false;
-            _stopSnake = stopSnake;
+            _mainWindow = mainWindow;
         }
 
         public void ChangeSnakeNextDirection(NextDirection nextDirection)
@@ -42,6 +57,7 @@ namespace Bachelor.Snake
             _snake = new Snake((_sideSquareCount / 2, _sideSquareCount / 2), Direction.RIGHT);
             _food = getRandomCoordinates();
             _lost = false;
+            Score = 0;
         }
 
         public void Stop()
@@ -56,7 +72,7 @@ namespace Bachelor.Snake
             Update();
             if (_lost)
             {
-                _stopSnake();
+                _mainWindow.StopSnake();
             }
             else
             {
@@ -78,6 +94,7 @@ namespace Bachelor.Snake
             {
                 _foodEaten = true;
                 _snake.Eat();
+                Score++;
             }
             else if
             (

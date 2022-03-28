@@ -9,14 +9,14 @@ using System.Windows.Shapes;
 
 namespace Bachelor.Snake
 {
-    internal class Snake
+    public class Snake
     {
         public LinkedList<(int X, int Y)> Body { get; private set; }
         public (int X, int Y) Head
         {
             get
             {
-                return Body.Last.Value;
+                return Body.Last!.Value;
             }
         }
 
@@ -33,7 +33,8 @@ namespace Bachelor.Snake
 
         public void Move()
         {
-            (int X, int Y) head = Body.Last.Value;
+            (int X, int Y) head = Body.Last!.Value;
+
             if (_eaten)
             {
                 _eaten = false;
