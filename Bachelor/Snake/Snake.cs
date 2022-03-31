@@ -26,8 +26,12 @@ namespace Bachelor.Snake
 
         public Snake((int X, int Y) startingCoordinates, Direction direction)
         {
+            (int X, int Y) = startingCoordinates;
+
             Body = new LinkedList<(int X, int Y)>();
             Body.AddLast(startingCoordinates);
+            Body.AddLast((X - 1, Y));
+            Body.AddLast((X - 2, Y));
             _direction = direction;
         }
 

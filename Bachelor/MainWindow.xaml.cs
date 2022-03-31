@@ -9,6 +9,7 @@ using Bachelor.Snake;
 using System.Windows.Threading;
 using System;
 using System.Windows.Input;
+using Bachelor.AI;
 
 namespace Bachelor
 {
@@ -18,6 +19,7 @@ namespace Bachelor
     public partial class MainWindow : MetroWindow
     {
         public Game? Game { get; private set; }
+        private bool _manualMode;
 
         private DispatcherTimer _gameTickTimer;
 
@@ -26,6 +28,7 @@ namespace Bachelor
         {
             InitializeComponent();
             _gameTickTimer = new DispatcherTimer();
+            _manualMode = true;
         }
 
         public void StopSnake()
@@ -66,21 +69,6 @@ namespace Bachelor
             }
         }
 
-        private void StartSnake(object sender, RoutedEventArgs e)
-        {
-            if (Game != null)
-            {
-                Game.Start();
-                _gameTickTimer.Start();
-                Focusable = false;
-            }
-        }
-
-        private void StopSnake(object sender, RoutedEventArgs e)
-        {
-            StopSnake();
-        }
-
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
             Game = new Game(SnakeCanvas, this);
@@ -89,20 +77,48 @@ namespace Bachelor
             _gameTickTimer.Stop();
             _gameTickTimer.Interval = TimeSpan.FromMilliseconds(200);
 
-            this.KeyDown += (object sender, KeyEventArgs e) =>
+            KeyDown += (object sender, KeyEventArgs e) =>
             {
-                switch (e.Key)
+                if (_manualMode)
                 {
-                    case Key.A:
-                        Game.ChangeSnakeNextDirection(NextDirection.LEFT);
-                        break;
-                    case Key.D:
-                        Game.ChangeSnakeNextDirection(NextDirection.RIGHT);
-                        break;
-                    default:
-                        break;
+                    switch (e.Key)
+                    {
+                        case Key.A:
+                            Game.ChangeSnakeNextDirection(NextDirection.LEFT);
+                            break;
+                        case Key.D:
+                            Game.ChangeSnakeNextDirection(NextDirection.RIGHT);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             };
+        }
+
+        private void StartSnake(object sender, RoutedEventArgs e)
+        {
+            if (Game != null)
+            {
+                Game.Start();
+                _gameTickTimer.Start();
+                _manualMode = true;
+            }
+        }
+
+        private void StopSnake(object sender, RoutedEventArgs e)
+        {
+            StopSnake();
+        }
+
+        private void StartQlearningAgent(object sender, RoutedEventArgs e)
+        {
+            if (Game != null)
+            {
+                Game.Start(new QLearningAgent());
+                _gameTickTimer.Start();
+                _manualMode = false;
+            }
         }
     }
 }

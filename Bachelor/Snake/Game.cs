@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bachelor.AI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,6 +34,7 @@ namespace Bachelor.Snake
         private bool _lost;
         private MainWindow _mainWindow;
         private int _score;
+        private Agent? _agent;
 
         public Game(Canvas canvas, MainWindow mainWindow)
         {
@@ -52,12 +54,13 @@ namespace Bachelor.Snake
             _snake.ChangeNextDirection(nextDirection);
         }
 
-        public void Start()
+        public void Start(Agent? agent = null)
         {
             _snake = new Snake((_sideSquareCount / 2, _sideSquareCount / 2), Direction.RIGHT);
             _food = getRandomCoordinates();
             _lost = false;
             Score = 0;
+            _agent = agent;
         }
 
         public void Stop()
@@ -69,6 +72,10 @@ namespace Bachelor.Snake
 
         public void Tick()
         {
+            if (_agent != null)
+            {
+                ChangeSnakeNextDirection(_agent.GetNextDirection());
+            }
             Update();
             if (_lost)
             {
