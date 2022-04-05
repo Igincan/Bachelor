@@ -16,7 +16,7 @@ namespace Bachelor.AI
             _random = new Random();
         }
 
-        public override NextDirection GetNextDirection()
+        public override NextDirection GetNextDirection(int state)
         {
             switch (_random.Next(6))
             {
@@ -26,6 +26,25 @@ namespace Bachelor.AI
                     return NextDirection.RIGHT;
                 default:
                     return NextDirection.STRAIGHT;
+            }
+        }
+
+        public override void Train(Game game)
+        {
+            int episodeCount = 1000;
+            int maxStepsPerEpisode = 500;
+
+            double learningRate = 0.1;
+            double discountRate = 0.99;
+
+            double explorationRate = 1;
+            double maxExplorationRate = 1;
+            double minExplorationRate = 0.01;
+            double explorationDecayRate = 0.001;
+
+            for (int episodeIndex = 0; episodeIndex < episodeCount; episodeIndex++)
+            {
+
             }
         }
     }

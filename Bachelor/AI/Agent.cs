@@ -4,6 +4,8 @@ namespace Bachelor.AI
 {
     public abstract class Agent
     {
-        public abstract NextDirection GetNextDirection();
+        public abstract NextDirection GetNextDirection(int state);
+
+        public abstract void Train(Game game);
     }
 }

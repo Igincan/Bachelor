@@ -40,7 +40,7 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="70"></RowDefinition>
                 <RowDefinition Height="600"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
@@ -59,50 +59,79 @@
             </Canvas>
         </Grid>
 
-        <TabControl Grid.Column="1">
-            <TabItem Header="Manual">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition Height="0.5*"></RowDefinition>
-                        <RowDefinition Height="4.5*"></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="600"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="670"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
 
-                    <Button Grid.Column="1" Grid.Row="1" Margin="10" Click="StartSnake">Start</Button>
-                    <Button Grid.Column="2" Grid.Row="1" Margin="10" Click="StopSnake">Stop</Button>
+            <TabControl Grid.Column="1" Grid.Row="1">
+                <TabItem Header="Manual">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="0.6*"></RowDefinition>
+                            <RowDefinition Height="4.5*"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
 
-                </Grid>
-            </TabItem>
-            <TabItem Header="Q-learning">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition Height="0.5*"></RowDefinition>
-                        <RowDefinition Height="4.5*"></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
+                        <Button Grid.Column="0" Grid.Row="1" Margin="10" Click="StartSnake">Start</Button>
+                        <Button Grid.Column="1" Grid.Row="1" Margin="10" Click="StopSnake">Stop</Button>
 
-                    <Button Grid.Column="1" Grid.Row="1" Margin="10" Click="StartQlearningAgent">Start</Button>
-                    <Button Grid.Column="2" Grid.Row="1" Margin="10" Click="StopSnake">Stop</Button>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Q-learning">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="0.6*"></RowDefinition>
+                            <RowDefinition Height="4.5*"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
 
-                </Grid>
-            </TabItem>
-            <TabItem Header="Training">
-                <Label Content="Not implemented" />
-            </TabItem>
-        </TabControl>
+                        <Button Grid.Column="0" Grid.Row="1" Margin="10" Click="StartQLearningAgent">Start</Button>
+                        <Button Grid.Column="1" Grid.Row="1" Margin="10" Click="StopSnake">Stop</Button>
+
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Training">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="0.6*"></RowDefinition>
+                            <RowDefinition Height="4.5*"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Column="0" Grid.Row="1" Margin="10" Click="TrainQLearningAgent">Train Q-Learning</Button>
+
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
     </Grid>
 </mah:MetroWindow>

@@ -74,7 +74,7 @@ namespace Bachelor.Snake
         {
             if (_agent != null)
             {
-                ChangeSnakeNextDirection(_agent.GetNextDirection());
+                ChangeSnakeNextDirection(_agent.GetNextDirection(0));
             }
             Update();
             if (_lost)
@@ -91,6 +91,14 @@ namespace Bachelor.Snake
         {
             UpdateSnake();
             UpdateFood();
+        }
+
+        public async void TrainAgent(Agent agent)
+        {
+            await Task.Run(() =>
+            {
+                agent.Train(this);
+            });
         }
 
         private void UpdateSnake()

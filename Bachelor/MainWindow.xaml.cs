@@ -20,15 +20,16 @@ namespace Bachelor
     {
         public Game? Game { get; private set; }
         private bool _manualMode;
+        private QLearningAgent _qLearningAgent;
 
         private DispatcherTimer _gameTickTimer;
-
 
         public MainWindow()
         {
             InitializeComponent();
             _gameTickTimer = new DispatcherTimer();
             _manualMode = true;
+            _qLearningAgent = new QLearningAgent();
         }
 
         public void StopSnake()
@@ -111,13 +112,21 @@ namespace Bachelor
             StopSnake();
         }
 
-        private void StartQlearningAgent(object sender, RoutedEventArgs e)
+        private void StartQLearningAgent(object sender, RoutedEventArgs e)
         {
             if (Game != null)
             {
-                Game.Start(new QLearningAgent());
+                Game.Start(_qLearningAgent);
                 _gameTickTimer.Start();
                 _manualMode = false;
+            }
+        }
+
+        private void TrainQLearningAgent(object sender, RoutedEventArgs e)
+        {
+            if (Game != null)
+            {
+                Game.TrainAgent(_qLearningAgent = new QLearningAgent());
             }
         }
     }
