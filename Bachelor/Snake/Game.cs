@@ -18,10 +18,28 @@ namespace Bachelor.Snake
             private set
             {
                 _score = value;
-                if (_mainWindow != null)
+                if (_mainWindow != null && _withGraphics)
                 {
                     _mainWindow.ScoreGroupBox.Content = value;
                 }
+            }
+        }
+
+        public bool Lost {
+            get => _lost;
+        }
+
+        public string Enviroment
+        {
+            get
+            {
+                LinkedList<(int X, int Y)> allCoordinates = new LinkedList<(int X, int Y)>();
+                allCoordinates.AddLast(_food);
+                foreach (var coordinates in _snake.Body.Reverse())
+                {
+                    allCoordinates.AddLast(coordinates);
+                }
+                return $"[{string.Join("][", allCoordinates.Select((coords) => $"{coords.X},{coords.Y}"))}]";
             }
         }
 
@@ -35,6 +53,7 @@ namespace Bachelor.Snake
         private MainWindow _mainWindow;
         private int _score;
         private Agent? _agent;
+        private bool _withGraphics;
 
         public Game(Canvas canvas, MainWindow mainWindow)
         {
@@ -42,11 +61,12 @@ namespace Bachelor.Snake
             _snake = new Snake((0, 0), Direction.RIGHT);
             _food = (0, 0);
             _foodEaten = false;
-            _sideSquareCount = 15;
+            _sideSquareCount = 10;
             _drawer = new Drawer(canvas, _sideSquareCount);
             _random = new Random();
             _lost = false;
             _mainWindow = mainWindow;
+            _withGraphics = false;
         }
 
         public void ChangeSnakeNextDirection(NextDirection nextDirection)
@@ -54,13 +74,14 @@ namespace Bachelor.Snake
             _snake.ChangeNextDirection(nextDirection);
         }
 
-        public void Start(Agent? agent = null)
+        public void Start(bool withGraphics = true, Agent? agent = null)
         {
             _snake = new Snake((_sideSquareCount / 2, _sideSquareCount / 2), Direction.RIGHT);
             _food = getRandomCoordinates();
             _lost = false;
             Score = 0;
             _agent = agent;
+            _withGraphics = withGraphics;
         }
 
         public void Stop()
@@ -74,7 +95,7 @@ namespace Bachelor.Snake
         {
             if (_agent != null)
             {
-                ChangeSnakeNextDirection(_agent.GetNextDirection(0));
+                ChangeSnakeNextDirection(_agent.GetNextDirection(Enviroment));
             }
             Update();
             if (_lost)
@@ -87,21 +108,24 @@ namespace Bachelor.Snake
             }
         }
 
-        public void Update()
+        public int Update()
         {
-            UpdateSnake();
+            int reward = UpdateSnake();
             UpdateFood();
+            return reward;
         }
 
         public async void TrainAgent(Agent agent)
         {
+            _mainWindow.TrainQLearningButton.IsEnabled = false;
             await Task.Run(() =>
             {
                 agent.Train(this);
             });
+            _mainWindow.TrainQLearningButton.IsEnabled = true;
         }
 
-        private void UpdateSnake()
+        private int UpdateSnake()
         {
             _snake.Move();
 
@@ -110,6 +134,7 @@ namespace Bachelor.Snake
                 _foodEaten = true;
                 _snake.Eat();
                 Score++;
+                return 1;
             }
             else if
             (
@@ -120,6 +145,7 @@ namespace Bachelor.Snake
             {
                 _lost = true;
             }
+            return 0;
         }
 
         private void UpdateFood()

@@ -116,7 +116,7 @@ namespace Bachelor
         {
             if (Game != null)
             {
-                Game.Start(_qLearningAgent);
+                Game.Start(true, _qLearningAgent);
                 _gameTickTimer.Start();
                 _manualMode = false;
             }

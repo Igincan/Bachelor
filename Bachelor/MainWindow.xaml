@@ -127,7 +127,14 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <Button Grid.Column="0" Grid.Row="1" Margin="10" Click="TrainQLearningAgent">Train Q-Learning</Button>
+                        <Button
+                            x:Name="TrainQLearningButton"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            Margin="10"
+                            Click="TrainQLearningAgent">
+                            Train Q-Learning
+                        </Button>
 
                     </Grid>
                 </TabItem>

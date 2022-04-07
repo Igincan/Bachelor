@@ -30,8 +30,6 @@ namespace Bachelor.Snake
 
             Body = new LinkedList<(int X, int Y)>();
             Body.AddLast(startingCoordinates);
-            Body.AddLast((X - 1, Y));
-            Body.AddLast((X - 2, Y));
             _direction = direction;
         }
 
