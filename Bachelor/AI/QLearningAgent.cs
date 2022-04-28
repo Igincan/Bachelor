@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace Bachelor.AI
 {
@@ -17,6 +19,11 @@ namespace Bachelor.AI
         {
             _random = new Random();
             _qTable = new Dictionary<string, double[]>();
+            
+        }
+
+        internal bool LoadTable()
+        {
             if (File.Exists("q_table"))
             {
                 var lines = File.ReadAllLines("q_table");
@@ -28,7 +35,9 @@ namespace Bachelor.AI
                     double.TryParse(fields[3], out var field3);
                     _qTable.Add(fields[0], new double[] { field1, field2, field3 });
                 }
+                return true;
             }
+            return false;
         }
 
         public override NextDirection GetNextDirection(string state)
@@ -41,9 +50,8 @@ namespace Bachelor.AI
             return MapIntToNextDirection(actions.IndexOf(actions.Max()));
         }
 
-        public override void Train(Game game)
+        public override void Train(Game game, int episodeCount, ProgressBar progressBar)
         {
-            int episodeCount = 10000000;
             int maxStepsPerEpisode = 500;
 
             double learningRate = 0.1;
@@ -98,7 +106,12 @@ namespace Bachelor.AI
 
                     explorationRate = minExplorationRate + (maxExplorationRate - minExplorationRate) * Math.Exp(-explorationDecayRate * episodeIndex);
                 }
+                if (episodeIndex % 100 == 0)
+                {
+                    progressBar.Dispatcher.BeginInvoke(() => progressBar.Value = (double)episodeIndex / episodeCount * 100);
+                }
             }
+            progressBar.Dispatcher.BeginInvoke(() => progressBar.Value = 100);
             var lines = new List<string>();
             foreach (var item in _qTable)
             {

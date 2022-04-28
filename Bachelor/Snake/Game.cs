@@ -34,12 +34,46 @@ namespace Bachelor.Snake
             get
             {
                 LinkedList<(int X, int Y)> allCoordinates = new LinkedList<(int X, int Y)>();
-                allCoordinates.AddLast(_food);
+                int viewDistance = 3;
+
                 foreach (var coordinates in _snake.Body.Reverse())
                 {
-                    allCoordinates.AddLast(coordinates);
+                    (int X, int Y) newCoordinates = (coordinates.X - _snake.Head.X, coordinates.Y - _snake.Head.Y);
+                    if (Math.Abs(newCoordinates.X) <= viewDistance && Math.Abs(newCoordinates.Y) <= viewDistance)
+                    {
+                        allCoordinates.AddLast(newCoordinates);
+                    }
                 }
-                return $"[{string.Join("][", allCoordinates.Select((coords) => $"{coords.X},{coords.Y}"))}]";
+
+                string enviroment = string.Join("/", allCoordinates.Select((coords) => $"{coords.X},{coords.Y}"));
+
+                string[] borders = new string[4] { "-", "-", "-", "-" };
+
+                if (_snake.Head.X < viewDistance)
+                {
+                    borders[0] = (_snake.Head.X + 1).ToString();
+                }
+                if (_snake.Head.Y < viewDistance)
+                {
+                    borders[1] = (_snake.Head.Y + 1).ToString();
+                }
+                if (_sideSquareCount - _snake.Head.X <= viewDistance)
+                {
+                    borders[2] = (_sideSquareCount - _snake.Head.X).ToString();
+                }
+                if (_sideSquareCount - _snake.Head.Y <= viewDistance)
+                {
+                    borders[2] = (_sideSquareCount - _snake.Head.Y).ToString();
+                }
+
+                (int X, int Y) newFood = (_food.X - _snake.Head.X, _food.Y - _snake.Head.Y);
+                string foodStr = "-";
+                if (Math.Abs(newFood.X) <= viewDistance && Math.Abs(newFood.Y) <= viewDistance)
+                {
+                    foodStr = $"{newFood.X},{newFood.Y}";
+                }
+
+                return $"{borders[0]}{borders[1]}{borders[2]}{borders[3]}/{foodStr}/{enviroment}";
             }
         }
 
@@ -79,9 +113,9 @@ namespace Bachelor.Snake
             _snake = new Snake((_sideSquareCount / 2, _sideSquareCount / 2), Direction.RIGHT);
             _food = getRandomCoordinates();
             _lost = false;
+            _withGraphics = withGraphics;
             Score = 0;
             _agent = agent;
-            _withGraphics = withGraphics;
         }
 
         public void Stop()
@@ -115,12 +149,12 @@ namespace Bachelor.Snake
             return reward;
         }
 
-        public async void TrainAgent(Agent agent)
+        public async void TrainAgent(Agent agent, int generationCount, ProgressBar progressBar)
         {
             _mainWindow.TrainQLearningButton.IsEnabled = false;
             await Task.Run(() =>
             {
-                agent.Train(this);
+                agent.Train(this, generationCount, progressBar);
             });
             _mainWindow.TrainQLearningButton.IsEnabled = true;
         }
@@ -144,6 +178,7 @@ namespace Bachelor.Snake
             )
             {
                 _lost = true;
+                return -1;
             }
             return 0;
         }

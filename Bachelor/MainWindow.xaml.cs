@@ -30,6 +30,12 @@ namespace Bachelor
             _gameTickTimer = new DispatcherTimer();
             _manualMode = true;
             _qLearningAgent = new QLearningAgent();
+            QLearningProgressBar.Minimum = 0;
+            QLearningProgressBar.Maximum = 100;
+            if (_qLearningAgent.LoadTable())
+            {
+                QLearningProgressBar.Value = 100;
+            }
         }
 
         public void StopSnake()
@@ -126,7 +132,12 @@ namespace Bachelor
         {
             if (Game != null)
             {
-                Game.TrainAgent(_qLearningAgent = new QLearningAgent());
+                if (!int.TryParse(QLearningGenerationCount.Text, out int count))
+                {
+                    count = 10000;
+                    QLearningGenerationCount.Text = count.ToString();
+                }
+                Game.TrainAgent(_qLearningAgent = new QLearningAgent(), count, QLearningProgressBar);
             }
         }
     }
