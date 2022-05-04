@@ -50,7 +50,14 @@
                 Grid.Row="1"
                 Header="Score"
                 x:Name="ScoreGroupBox"
-                mah:ControlsHelper.ContentCharacterCasing="Upper" />
+                mah:ControlsHelper.ContentCharacterCasing="Upper">
+
+                <TextBlock
+                    x:Name="ScoreTextBlock"
+                    HorizontalAlignment="Center"
+                    FontWeight="Bold"
+                    FontSize="30" />
+            </GroupBox>
             <Canvas
                 Background="BurlyWood"
                 Grid.Column="1"
@@ -87,8 +94,23 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <Button Grid.Column="0" Grid.Row="1" Margin="10" Click="StartSnake">Start</Button>
-                        <Button Grid.Column="1" Grid.Row="1" Margin="10" Click="StopSnake">Stop</Button>
+                        <Button
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            Margin="10"
+                            x:Name="StartSnakeButton"
+                            Click="StartSnake">
+                            Start
+                        </Button>
+                        <Button
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Margin="10"
+                            x:Name="StopSnakeButton"
+                            IsEnabled="False"
+                            Click="StopSnake">
+                            Stop
+                        </Button>
 
                     </Grid>
                 </TabItem>
@@ -107,8 +129,23 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <Button Grid.Column="0" Grid.Row="1" Margin="10" Click="StartQLearningAgent">Start</Button>
-                        <Button Grid.Column="1" Grid.Row="1" Margin="10" Click="StopSnake">Stop</Button>
+                        <Button
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            Margin="10"
+                            x:Name="StartQLearningAgentButton"
+                            Click="StartQLearningAgent">
+                            Start
+                        </Button>
+                        <Button
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Margin="10"
+                            x:Name="StopQLearningAgentButton"
+                            IsEnabled="False"
+                            Click="StopSnake">
+                            Stop
+                        </Button>
 
                     </Grid>
                 </TabItem>

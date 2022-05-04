@@ -10,6 +10,8 @@ using System.Windows.Threading;
 using System;
 using System.Windows.Input;
 using Bachelor.AI;
+using System.Windows.Controls;
+using System.Collections.Generic;
 
 namespace Bachelor
 {
@@ -23,6 +25,8 @@ namespace Bachelor
         private QLearningAgent _qLearningAgent;
 
         private DispatcherTimer _gameTickTimer;
+        private List<Button> _startButtons;
+        private List<Button> _stopButtons;
 
         public MainWindow()
         {
@@ -36,6 +40,8 @@ namespace Bachelor
             {
                 QLearningProgressBar.Value = 100;
             }
+            _startButtons = new List<Button> { StartSnakeButton, StartQLearningAgentButton };
+            _stopButtons = new List<Button> { StopSnakeButton, StopQLearningAgentButton };
         }
 
         public void StopSnake()
@@ -44,6 +50,8 @@ namespace Bachelor
             {
                 Game.Stop();
                 _gameTickTimer.Stop();
+                _startButtons.ForEach(button => button.IsEnabled = true);
+                _stopButtons.ForEach(button => button.IsEnabled = false);
             }
         }
 
@@ -110,6 +118,8 @@ namespace Bachelor
                 Game.Start();
                 _gameTickTimer.Start();
                 _manualMode = true;
+                _startButtons.ForEach(button => button.IsEnabled = false);
+                _stopButtons.ForEach(button => button.IsEnabled = true);
             }
         }
 
@@ -125,6 +135,8 @@ namespace Bachelor
                 Game.Start(true, _qLearningAgent);
                 _gameTickTimer.Start();
                 _manualMode = false;
+                _startButtons.ForEach(button => button.IsEnabled = false);
+                _stopButtons.ForEach(button => button.IsEnabled = true);
             }
         }
 
@@ -137,7 +149,8 @@ namespace Bachelor
                     count = 10000;
                     QLearningGenerationCount.Text = count.ToString();
                 }
-                Game.TrainAgent(_qLearningAgent = new QLearningAgent(), count, QLearningProgressBar);
+                _qLearningAgent = new QLearningAgent();
+                Game.TrainAgent(_qLearningAgent, count, QLearningProgressBar);
             }
         }
     }

@@ -22,7 +22,7 @@ namespace Bachelor.AI
             
         }
 
-        internal bool LoadTable()
+        public bool LoadTable()
         {
             if (File.Exists("q_table"))
             {
@@ -95,7 +95,10 @@ namespace Bachelor.AI
                         _qTable.Add(newState, new double[3]);
                     }
 
-                    _qTable[state][action] = (1 - learningRate) * _qTable[state][action] + learningRate * (reward + discountRate * _qTable[newState].Max());
+                                                                  // stará Q-hodnota  //
+                    _qTable[state][action] = (1 - learningRate) * _qTable[state][action] +
+                                             learningRate       * (reward + discountRate * _qTable[newState].Max());
+                                                                  // nová Q-hodnota                              //
 
                     state = newState;
 
@@ -104,7 +107,8 @@ namespace Bachelor.AI
                         break;
                     }
 
-                    explorationRate = minExplorationRate + (maxExplorationRate - minExplorationRate) * Math.Exp(-explorationDecayRate * episodeIndex);
+                    explorationRate = minExplorationRate + (maxExplorationRate - minExplorationRate) *
+                                      Math.Exp(-explorationDecayRate * episodeIndex);
                 }
                 if (episodeIndex % 100 == 0)
                 {

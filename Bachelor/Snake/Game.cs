@@ -20,7 +20,7 @@ namespace Bachelor.Snake
                 _score = value;
                 if (_mainWindow != null && _withGraphics)
                 {
-                    _mainWindow.ScoreGroupBox.Content = value;
+                    _mainWindow.ScoreTextBlock.Text = value.ToString();
                 }
             }
         }
@@ -152,11 +152,13 @@ namespace Bachelor.Snake
         public async void TrainAgent(Agent agent, int generationCount, ProgressBar progressBar)
         {
             _mainWindow.TrainQLearningButton.IsEnabled = false;
+            _mainWindow.QLearningGenerationCount.IsEnabled = false;
             await Task.Run(() =>
             {
                 agent.Train(this, generationCount, progressBar);
             });
             _mainWindow.TrainQLearningButton.IsEnabled = true;
+            _mainWindow.QLearningGenerationCount.IsEnabled = true;
         }
 
         private int UpdateSnake()
