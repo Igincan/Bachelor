@@ -23,6 +23,7 @@ namespace Bachelor
         public Game? Game { get; private set; }
         private bool _manualMode;
         private QLearningAgent _qLearningAgent;
+        private QLearningSimpleEnviromentAgent _qLearningSimpleEnviromentAgent;
 
         private DispatcherTimer _gameTickTimer;
         private List<Button> _startButtons;
@@ -34,14 +35,19 @@ namespace Bachelor
             _gameTickTimer = new DispatcherTimer();
             _manualMode = true;
             _qLearningAgent = new QLearningAgent();
+            _qLearningSimpleEnviromentAgent = new QLearningSimpleEnviromentAgent();
             QLearningProgressBar.Minimum = 0;
             QLearningProgressBar.Maximum = 100;
             if (_qLearningAgent.LoadTable())
             {
                 QLearningProgressBar.Value = 100;
             }
-            _startButtons = new List<Button> { StartSnakeButton, StartQLearningAgentButton };
-            _stopButtons = new List<Button> { StopSnakeButton, StopQLearningAgentButton };
+            if (_qLearningSimpleEnviromentAgent.LoadTable())
+            {
+                QLearningSimpleEnviromentProgressBar.Value = 100;
+            }
+            _startButtons = new List<Button> { StartSnakeButton, StartQLearningAgentButton, StartQLearningSimpleEnviromentAgentButton };
+            _stopButtons = new List<Button> { StopSnakeButton, StopQLearningAgentButton, StopQLearningSimpleEnviromentAgentButton };
         }
 
         public void StopSnake()
@@ -151,6 +157,32 @@ namespace Bachelor
                 }
                 _qLearningAgent = new QLearningAgent();
                 Game.TrainAgent(_qLearningAgent, count, QLearningProgressBar);
+            }
+        }
+
+        private void TrainQLearningSimpleEnviromentAgent(object sender, RoutedEventArgs e)
+        {
+            if (Game != null)
+            {
+                if (!int.TryParse(QLearningSimpleEnviromentGenerationCount.Text, out int count))
+                {
+                    count = 10000;
+                    QLearningSimpleEnviromentGenerationCount.Text = count.ToString();
+                }
+                _qLearningSimpleEnviromentAgent = new QLearningSimpleEnviromentAgent();
+                Game.TrainAgent(_qLearningSimpleEnviromentAgent, count, QLearningSimpleEnviromentProgressBar);
+            }
+        }
+
+        private void StartQLearningSimpleEnviromentAgent(object sender, RoutedEventArgs e)
+        {
+            if (Game != null)
+            {
+                Game.Start(true, _qLearningSimpleEnviromentAgent);
+                _gameTickTimer.Start();
+                _manualMode = false;
+                _startButtons.ForEach(button => button.IsEnabled = false);
+                _stopButtons.ForEach(button => button.IsEnabled = true);
             }
         }
     }

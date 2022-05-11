@@ -149,7 +149,7 @@
 
                     </Grid>
                 </TabItem>
-                <TabItem Header="Training">
+                <TabItem Header="Q-Learning SE">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
@@ -161,6 +161,42 @@
                             <RowDefinition></RowDefinition>
                             <RowDefinition Height="0.6*"></RowDefinition>
                             <RowDefinition Height="4.5*"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Button
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            Margin="10"
+                            x:Name="StartQLearningSimpleEnviromentAgentButton"
+                            Click="StartQLearningSimpleEnviromentAgent">
+                            Start
+                        </Button>
+                        <Button
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Margin="10"
+                            x:Name="StopQLearningSimpleEnviromentAgentButton"
+                            IsEnabled="False"
+                            Click="StopSnake">
+                            Stop
+                        </Button>
+
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Training">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="0.6*"></RowDefinition>
+                            <RowDefinition Height="0.6*"></RowDefinition>
+                            <RowDefinition Height="3.9*"></RowDefinition>
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
 
@@ -184,6 +220,28 @@
                             x:Name="QLearningProgressBar"
                             Grid.Column="2"
                             Grid.Row="1"
+                            Margin="10"/>
+
+                        <Button
+                            x:Name="TrainQLearningSimpleEnviromentButton"
+                            Grid.Column="0"
+                            Grid.Row="2"
+                            Margin="10"
+                            Click="TrainQLearningSimpleEnviromentAgent">
+                            Train Q-Learning SE
+                        </Button>
+
+                        <TextBox
+                            x:Name="QLearningSimpleEnviromentGenerationCount"
+                            Grid.Column="1"
+                            Grid.Row="2"
+                            Margin="10"
+                            mah:TextBoxHelper.Watermark="Generations" />
+
+                        <ProgressBar
+                            x:Name="QLearningSimpleEnviromentProgressBar"
+                            Grid.Column="2"
+                            Grid.Row="2"
                             Margin="10"/>
 
                     </Grid>

@@ -20,6 +20,11 @@ namespace Bachelor.Snake
             }
         }
 
+        public Direction Direction
+        {
+            get => _direction;
+        }
+
         private Direction _direction;
         private bool _eaten;
         private NextDirection _nextDirection;

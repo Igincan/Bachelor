@@ -11,12 +11,12 @@ using System.Windows.Threading;
 
 namespace Bachelor.AI
 {
-    public class QLearningAgent : Agent
+    public class QLearningSimpleEnviromentAgent : Agent
     {
         private readonly Random _random;
         private Dictionary<string, double[]> _qTable;
 
-        public QLearningAgent()
+        public QLearningSimpleEnviromentAgent()
         {
             _random = new Random();
             _qTable = new Dictionary<string, double[]>();
@@ -25,9 +25,9 @@ namespace Bachelor.AI
 
         public bool LoadTable()
         {
-            if (File.Exists("q_table"))
+            if (File.Exists("q_table_simple"))
             {
-                var lines = File.ReadAllLines("q_table");
+                var lines = File.ReadAllLines("q_table_simple");
                 foreach (var line in lines)
                 {
                     var fields = line.Split('|');
@@ -72,7 +72,8 @@ namespace Bachelor.AI
                 if (episodeIndex == 0)
                 {
                     sw.Start();
-                } else if (episodeIndex % 1000 == 0)
+                }
+                else if (episodeIndex % 1000 == 0)
                 {
                     sw.Stop();
                     durationsInMsPer1000Episodes.AddLast(sw.ElapsedMilliseconds);
@@ -82,7 +83,7 @@ namespace Bachelor.AI
 
                 game.Start(false);
 
-                string state = game.Enviroment;
+                string state = game.SimpleEnviroment;
                 int action;
 
                 for (int stepIndex = 0; stepIndex < maxStepsPerEpisode; stepIndex++)
@@ -104,7 +105,7 @@ namespace Bachelor.AI
 
                     game.ChangeSnakeNextDirection(MapIntToNextDirection(action));
                     int reward = game.Update();
-                    string newState = game.Enviroment;
+                    string newState = game.SimpleEnviroment;
 
                     if (!_qTable.ContainsKey(newState))
                     {
@@ -141,10 +142,10 @@ namespace Bachelor.AI
             {
                 lines.Add($"{item.Key}|{item.Value[0]}|{item.Value[1]}|{item.Value[2]}");
             }
-            File.WriteAllLines("q_table", lines);
+            File.WriteAllLines("q_table_simple", lines);
 
-            File.WriteAllLines("out/scores.csv", scoresPerEpisode.Select(score => score.ToString()));
-            File.WriteAllLines("out/durations.csv", durationsInMsPer1000Episodes.Select(duration => duration.ToString()));
+            File.WriteAllLines("out/scores_mini.csv", scoresPerEpisode.Select(score => score.ToString()));
+            File.WriteAllLines("out/durations_mini.csv", durationsInMsPer1000Episodes.Select(duration => duration.ToString()));
         }
 
         private static NextDirection MapIntToNextDirection(int integer)

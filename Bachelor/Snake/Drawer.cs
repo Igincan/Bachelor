@@ -53,7 +53,18 @@ namespace Bachelor.Snake
 
         public bool CheckSquare((int X, int Y) coordinates)
         {
-            return _squares[coordinates.X, coordinates.Y] != null;
+            if
+            (
+                coordinates.X < 0 || coordinates.X >= _sideSquareCount ||
+                coordinates.Y < 0 || coordinates.Y >= _sideSquareCount
+            )
+            {
+                return true;
+            }
+            else
+            {
+                return _squares[coordinates.X, coordinates.Y] != null;
+            }
         }
     }
 }

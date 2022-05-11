@@ -77,6 +77,31 @@ namespace Bachelor.Snake
             }
         }
 
+        public string SimpleEnviroment
+        {
+            get
+            {
+                int left = getCoordinatesValue((_snake.Head.X - 1, _snake.Head.Y));
+                int right = getCoordinatesValue((_snake.Head.X + 1, _snake.Head.Y));
+                int up = getCoordinatesValue((_snake.Head.X, _snake.Head.Y - 1));
+                int down = getCoordinatesValue((_snake.Head.X, _snake.Head.Y + 1));
+
+                switch (_snake.Direction)
+                {
+                    case Direction.LEFT:
+                        return $"{down}{left}{up}";
+                    case Direction.UP:
+                        return $"{left}{up}{right}";
+                    case Direction.RIGHT:
+                        return $"{up}{right}{down}";
+                    case Direction.DOWN:
+                        return $"{right}{down}{left}";
+                    default:
+                        return string.Empty;
+                }
+            }
+        }
+
         private Snake _snake;
         private (int X, int Y) _food;
         private bool _foodEaten;
@@ -88,6 +113,7 @@ namespace Bachelor.Snake
         private int _score;
         private Agent? _agent;
         private bool _withGraphics;
+        private Canvas _canvas;
 
         public Game(Canvas canvas, MainWindow mainWindow)
         {
@@ -101,6 +127,7 @@ namespace Bachelor.Snake
             _lost = false;
             _mainWindow = mainWindow;
             _withGraphics = false;
+            _canvas = canvas;
         }
 
         public void ChangeSnakeNextDirection(NextDirection nextDirection)
@@ -151,14 +178,30 @@ namespace Bachelor.Snake
 
         public async void TrainAgent(Agent agent, int generationCount, ProgressBar progressBar)
         {
-            _mainWindow.TrainQLearningButton.IsEnabled = false;
-            _mainWindow.QLearningGenerationCount.IsEnabled = false;
+            if (agent is QLearningAgent)
+            {
+                _mainWindow.TrainQLearningButton.IsEnabled = false;
+                _mainWindow.QLearningGenerationCount.IsEnabled = false;
+            }
+            else if (agent is QLearningSimpleEnviromentAgent)
+            {
+                _mainWindow.TrainQLearningSimpleEnviromentButton.IsEnabled = false;
+                _mainWindow.QLearningSimpleEnviromentGenerationCount.IsEnabled = false;
+            }
             await Task.Run(() =>
             {
-                agent.Train(this, generationCount, progressBar);
+                agent.Train(new Game(_canvas, _mainWindow), generationCount, progressBar);
             });
-            _mainWindow.TrainQLearningButton.IsEnabled = true;
-            _mainWindow.QLearningGenerationCount.IsEnabled = true;
+            if (agent is QLearningAgent)
+            {
+                _mainWindow.TrainQLearningButton.IsEnabled = true;
+                _mainWindow.QLearningGenerationCount.IsEnabled = true;
+            }
+            else if (agent is QLearningSimpleEnviromentAgent)
+            {
+                _mainWindow.TrainQLearningSimpleEnviromentButton.IsEnabled = true;
+                _mainWindow.QLearningSimpleEnviromentGenerationCount.IsEnabled = true;
+            }
         }
 
         private int UpdateSnake()
@@ -225,6 +268,22 @@ namespace Bachelor.Snake
                 coordinates = (_random.Next(_sideSquareCount), _random.Next(_sideSquareCount));
             } while (_drawer.CheckSquare(coordinates));
             return coordinates;
+        }
+
+        private int getCoordinatesValue((int X, int Y)  coordinates)
+        {
+            if (_food == coordinates)
+            {
+                return 2;
+            }
+            else if (_drawer.CheckSquare(coordinates))
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }
